@@ -1,0 +1,42 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Skill {
+  id        Int         @id @default(autoincrement())
+  name      String      @unique
+  userSkill UserSkill[]
+}
+
+model UserSkill {
+  id              Int     @id @default(autoincrement())
+  userId          Int     @map("user_id")
+  skillId         Int     @map("skill_id")
+  experienceValue Decimal @default(0) @map("experience_value") @db.Decimal(10, 1)
+  likeValue       Decimal @default(0) @map("like_value") @db.Decimal(10, 1)
+  skill           Skill   @relation(fields: [skillId], references: [id])
+  user            User    @relation(fields: [userId], references: [id])
+
+  @@unique([userId, skillId])
+  @@index([userId, skillId])
+}
+
+model User {
+  id        Int         @id @default(autoincrement())
+  role      Role        @default(USER)
+  email     String      @unique
+  name      String?
+  surname   String?
+  password  String
+  userSkill UserSkill[]
+}
+
+enum Role {
+  ADMIN
+  USER
+}
