@@ -33,7 +33,7 @@ model User {
   email     String      @unique
   name      String?
   surname   String?
-  password  String
+  password  String?
   userSkill UserSkill[]
 }
 
