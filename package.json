@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "vercel-build": "prisma generate && prisma migrate deploy && next build"
+    "vercel-build": "prisma generate && prisma migrate deploy --skip-seed && next build"
   },
   "prisma": {
     "seed": "npx tsx prisma/seed/seed.ts"
