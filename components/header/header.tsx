@@ -12,7 +12,7 @@ import {
 
 export const Header = () => {
   const { data: session } = useSession();
-  console.log("AAAAAAAAAA", session);
+
   return (
     <div className="py-4 flex items-center justify-between">
       <span>Skill-Stacker</span>

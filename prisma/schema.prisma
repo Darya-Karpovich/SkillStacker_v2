@@ -11,6 +11,7 @@ datasource db {
 model Skill {
   id        Int         @id @default(autoincrement())
   name      String      @unique
+  description String?
   userSkill UserSkill[]
 }
 
@@ -32,8 +33,6 @@ model User {
   role      Role        @default(USER)
   email     String      @unique
   name      String?
-  surname   String?
-  password  String?
   userSkill UserSkill[]
 }
 
