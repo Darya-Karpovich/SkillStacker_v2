@@ -1,9 +1,14 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { ColumnDef, HeaderContext, SortDirection } from "@tanstack/react-table";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { ColumnDef, HeaderContext } from "@tanstack/react-table";
 import { ArrowUp } from "lucide-react";
-import { ReactNode } from "react";
 
 export type UserSkill = {
   id: number;
@@ -12,13 +17,14 @@ export type UserSkill = {
   user: {
     id: number;
     name: string;
-    surname: string;
   };
   skill: {
     id: number;
     name: string;
+    description: string;
   };
 };
+
 const SortableColumnHeader = ({
   title,
   column,
@@ -48,16 +54,30 @@ const SortableColumnHeader = ({
 };
 export const columns: ColumnDef<UserSkill>[] = [
   {
-    accessorFn: (row) => `${row.user.name} ${row.user.surname}`,
-    header: "Person",
-    cell: (value) => (
-      <div className="min-w-[150px]">{value.getValue() as ReactNode}</div>
+    id: "user",
+    accessorKey: "user.name",
+    header: ({ column }) => (
+      <SortableColumnHeader title="User" column={column} />
     ),
   },
   {
-    accessorKey: "skill.name",
+    // accessorKey: "skill.name",
+    id: "skill",
+    accessorFn: (skill) => `${skill.skill.name}`,
     header: ({ column }) => (
       <SortableColumnHeader title="Skill" column={column} />
+    ),
+    cell: (skill) => (
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger>
+            <p>{skill.row.original.skill.name}</p>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>{skill.row.original.skill.description}</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
     ),
   },
   {

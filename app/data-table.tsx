@@ -21,16 +21,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
-
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -46,10 +36,12 @@ export function DataTable<TData, TValue>({
   data,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([
+    { id: "user", value: "" },
+  ]);
   const [pagination, setPagination] = useState({
     pageIndex: 0,
-    pageSize: 5,
+    pageSize: 7,
   });
 
   const table = useReactTable({
@@ -74,9 +66,9 @@ export function DataTable<TData, TValue>({
       <div className="flex items-center py-4">
         <Input
           placeholder="Filter users..."
-          value={(table.getColumn("Person")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("Person")?.setFilterValue(event.target.value)
+          value={columnFilters[0].value as string}
+          onChange={(e) =>
+            setColumnFilters([{ ...columnFilters[0], value: e.target.value }])
           }
           className="max-w-sm"
         />
