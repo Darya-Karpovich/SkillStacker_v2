@@ -21,28 +21,36 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  withUsers?: boolean;
+  isEditable?: boolean;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  withUsers = true,
+  isEditable = false,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([
-    { id: "user", value: "" },
-  ]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [pagination, setPagination] = useState({
     pageIndex: 0,
     pageSize: 7,
   });
+
+  useEffect(() => {
+    if (columns.find((column) => column.id === "user")) {
+      setColumnFilters([{ value: "", id: "user" }]);
+    }
+  }, [columns]);
 
   const table = useReactTable({
     data,
@@ -63,17 +71,25 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
-      <div className="flex items-center py-4">
-        <Input
-          placeholder="Filter users..."
-          value={columnFilters[0].value as string}
-          onChange={(e) =>
-            setColumnFilters([{ ...columnFilters[0], value: e.target.value }])
-          }
-          className="max-w-sm"
-        />
-      </div>
-
+      {withUsers && columnFilters.length > 0 && (
+        <div className="flex items-center py-4">
+          <Input
+            placeholder="Filter users..."
+            value={columnFilters[0].value as string}
+            onChange={(e) =>
+              setColumnFilters([{ ...columnFilters[0], value: e.target.value }])
+            }
+            className="max-w-sm"
+          />
+        </div>
+      )}
+      {isEditable && (
+        <div className="flex items-center justify-end py-4">
+          <Button size="icon">
+            <Plus />
+          </Button>
+        </div>
+      )}
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -96,21 +112,23 @@ export function DataTable<TData, TValue>({
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
+              <>
+                {table.getRowModel().rows.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))}
+              </>
             ) : (
               <TableRow>
                 <TableCell

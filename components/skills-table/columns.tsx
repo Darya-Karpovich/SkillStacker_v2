@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/tooltip";
 import { ColumnDef, HeaderContext } from "@tanstack/react-table";
 import { ArrowUp } from "lucide-react";
+import Link from "next/link";
 
 export type UserSkill = {
   id: number;
@@ -59,9 +60,13 @@ export const columns: ColumnDef<UserSkill>[] = [
     header: ({ column }) => (
       <SortableColumnHeader title="User" column={column} />
     ),
+    cell: (user) => (
+      <Link href={`/profile/${user.row.original.user.id}`}>
+        {user.row.original.user.name}
+      </Link>
+    ),
   },
   {
-    // accessorKey: "skill.name",
     id: "skill",
     accessorFn: (skill) => `${skill.skill.name}`,
     header: ({ column }) => (

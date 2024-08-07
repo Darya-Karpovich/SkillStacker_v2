@@ -1,5 +1,5 @@
-import { DataTable } from "./data-table";
-import { UserSkill, columns } from "./columns";
+import { DataTable } from "../components/skills-table/data-table";
+import { UserSkill, columns } from "../components/skills-table/columns";
 import prisma from "@/utils/prisma";
 
 const Home = async () => {
