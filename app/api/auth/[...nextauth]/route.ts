@@ -26,13 +26,13 @@ export const authOptions: NextAuthOptions = {
       }
       return true;
     },
-    session: ({ session, token }) => ({
-      ...session,
-      user: {
+    async session({ session, token }) {
+      session.user = {
         ...session.user,
-        id: token.sub,
-      },
-    }),
+        id: token.sub
+      }
+      return session;
+    },
   },
 };
 
