@@ -1,9 +1,9 @@
 import prisma from "@/utils/prisma";
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "../../api/auth/[...nextauth]/route";
 import { UserSkill } from "@prisma/client";
 import { DataTable } from "@/components/skills-table/data-table";
 import { userSkillsColumns } from "@/components/skills-table/user-skills-columns";
+import { authOptions } from "@/lib/configs/auth/authOptions";
 
 const Profile = async ({ params }: { params: { slug: string } }) => {
   const session = await getServerSession(authOptions);
