@@ -1,8 +1,9 @@
+import { Header } from "@/components/header/header";
+import { ThemeProvider } from "@/components/theme.provider";
+import { Analytics } from "@vercel/analytics/react";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/components/theme.provider";
-import { Header } from "@/components/header/header";
 import NextAuthProvider from "./session-provider";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -29,6 +30,7 @@ export default function RootLayout({
             <div className="flex mx-40 flex-col">
               <Header />
               {children}
+              <Analytics />
             </div>
           </ThemeProvider>
         </NextAuthProvider>
