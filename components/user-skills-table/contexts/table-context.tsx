@@ -1,6 +1,5 @@
 "use client";
 
-import { ActionType } from "@/components/skills-table/data-table";
 import { UserSkill } from "@prisma/client";
 import {
   Dispatch,
@@ -10,6 +9,7 @@ import {
   useContext,
   useState,
 } from "react";
+import { ActionType } from "../action-type";
 
 type TableCtx = {
   userSkills: UserSkill[];

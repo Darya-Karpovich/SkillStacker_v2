@@ -10,9 +10,9 @@ import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { addUserSkill, getSkills } from "@/app/actions";
 import { useTable } from "@/components/user-skills-table/contexts/table-context";
-import { ActionType } from "../data-table";
 import { useQuery } from "@tanstack/react-query";
 import { ErrorMessage } from "@hookform/error-message";
+import { ActionType } from "@/components/user-skills-table/action-type";
 
 const fetchSkills = async () => {
   return await getSkills();
@@ -59,7 +59,7 @@ export const AddSkillForm = () => {
       experience: 0,
     },
   });
-  console.log("AAAAAAAAA", errors);
+
   const onSubmit = (values: AddSkillFormValues) => {
     addUserSkill(values);
     setAction(ActionType.NONE);

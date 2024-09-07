@@ -15,7 +15,6 @@ export const getSkills = async () => {
 
 export const addUserSkill = async (formData: AddSkillFormValues) => {
   const session = await getServerSession(authOptions);
-  console.log("TEST");
   await prisma.userSkill.create({
     data: {
       userId: Number(session?.user.id),

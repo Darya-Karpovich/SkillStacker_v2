@@ -26,13 +26,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { AddSkillForm } from "./add-skill-form/add-skill-form";
-
-export enum ActionType {
-  ADD = "add",
-  EDIT = "edit",
-  DELETE = "delete",
-  NONE = "none",
-}
+import { ActionType } from "../user-skills-table/action-type";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -76,7 +70,6 @@ export function DataTable<TData, TValue>({
       pagination,
     },
   });
-
   return (
     <div>
       {withUsers && columnFilters.length > 0 && (
