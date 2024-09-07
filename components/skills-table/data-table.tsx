@@ -105,16 +105,15 @@ export function DataTable<TData, TValue>({
             ))}
           </TableHeader>
           <TableBody>
+            {action === ActionType.ADD && (
+              <TableRow key="form-row" className="relative">
+                <TableCell colSpan={columns.length}>
+                  <AddSkillForm />
+                </TableCell>
+              </TableRow>
+            )}
             {table.getRowModel().rows?.length ? (
               <>
-                {action === ActionType.ADD && (
-                  <TableRow key="form-row" className="relative">
-                    <TableCell colSpan={columns.length}>
-                      <AddSkillForm />
-                    </TableCell>
-                  </TableRow>
-                )}
-
                 {table.getRowModel().rows.map((row) => (
                   <TableRow
                     key={row.id}
