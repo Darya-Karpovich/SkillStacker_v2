@@ -24,20 +24,28 @@ import {
 import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { AddSkillForm } from "./add-skill-form/add-skill-form";
+
+export enum ActionType {
+  ADD = "add",
+  EDIT = "edit",
+  DELETE = "delete",
+  NONE = "none",
+}
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   withUsers?: boolean;
-  isEditable?: boolean;
+  action?: ActionType;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   withUsers = true,
-  isEditable = false,
+  action = ActionType.NONE,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -83,13 +91,6 @@ export function DataTable<TData, TValue>({
           />
         </div>
       )}
-      {isEditable && (
-        <div className="flex items-center justify-end py-4">
-          <Button size="icon">
-            <Plus />
-          </Button>
-        </div>
-      )}
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -113,6 +114,14 @@ export function DataTable<TData, TValue>({
           <TableBody>
             {table.getRowModel().rows?.length ? (
               <>
+                {action === ActionType.ADD && (
+                  <TableRow key="form-row" className="relative">
+                    <TableCell colSpan={columns.length}>
+                      <AddSkillForm />
+                    </TableCell>
+                  </TableRow>
+                )}
+
                 {table.getRowModel().rows.map((row) => (
                   <TableRow
                     key={row.id}
