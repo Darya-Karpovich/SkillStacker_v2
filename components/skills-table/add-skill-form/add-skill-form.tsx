@@ -1,6 +1,5 @@
 "use client";
 
-import { Input } from "@/components/ui/input";
 import { Combobox } from "./combobox";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -13,6 +12,11 @@ import { useTable } from "@/components/user-skills-table/contexts/table-context"
 import { useQuery } from "@tanstack/react-query";
 import { ErrorMessage } from "@hookform/error-message";
 import { ActionType } from "@/components/user-skills-table/action-type";
+import { Rating } from "@/components/rating/rating";
+import resolveConfig from "tailwindcss/resolveConfig";
+import tailwindConfig from "@/tailwind.config";
+import { Heart } from "@/app/assets/icons/heart";
+import { HeartHalf } from "@/app/assets/icons/heart-half";
 
 const fetchSkills = async () => {
   return await getSkills();
@@ -34,6 +38,8 @@ export const AddSkillForm = () => {
     queryKey: ["skills"],
     queryFn: fetchSkills,
   });
+
+  const fullConfig = resolveConfig(tailwindConfig);
 
   useEffect(() => {
     if (data) {
@@ -69,13 +75,13 @@ export const AddSkillForm = () => {
     <form
       onSubmit={handleSubmit(onSubmit)}
       onError={(errors) => console.log(errors)}
-      className="flex justify-between gap-5 relative"
+      className="relative flex w-full"
     >
       <Controller
         control={control}
         name="skill"
         render={({ field }) => (
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-1 flex-col gap-1 p-4">
             <Combobox
               options={skills}
               value={selectedSkill}
@@ -100,14 +106,12 @@ export const AddSkillForm = () => {
         control={control}
         name="experience"
         render={({ field }) => (
-          <Input
-            placeholder="Skill level"
-            type="number"
-            defaultValue={0}
-            min={0}
-            max={5}
-            step={0.5}
-            onChange={(e) => field.onChange(Number(e.target.value))}
+          <Rating
+            count={5}
+            color={fullConfig.theme.colors.yellow}
+            value={field.value}
+            setValue={field.onChange}
+            className="flex flex-1 items-center p-4"
           />
         )}
       />
@@ -115,18 +119,18 @@ export const AddSkillForm = () => {
         control={control}
         name="like"
         render={({ field }) => (
-          <Input
-            placeholder="Skill experience"
-            type="number"
-            defaultValue={0}
-            min={0}
-            max={5}
-            step={0.5}
-            onChange={(e) => field.onChange(Number(e.target.value))}
+          <Rating
+            fullSymbol={<Heart />}
+            halfSymbol={<HeartHalf />}
+            count={5}
+            color={fullConfig.theme.colors.red}
+            value={field.value}
+            setValue={field.onChange}
+            className="flex flex-1 items-center p-4"
           />
         )}
       />
-      <div className="absolute flex gap-2 -right-[120px]">
+      <div className="absolute -right-[120px] flex gap-2">
         <Button type="submit" size="icon" variant="secondary">
           <Check />
         </Button>

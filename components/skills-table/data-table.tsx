@@ -85,13 +85,16 @@ export function DataTable<TData, TValue>({
         </div>
       )}
       <div className="rounded-md border">
-        <Table>
+        <Table className="flex flex-col w-full">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
+              <TableRow key={headerGroup.id} className="flex">
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead
+                      key={header.id}
+                      className="flex-1 items-center flex"
+                    >
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -106,8 +109,8 @@ export function DataTable<TData, TValue>({
           </TableHeader>
           <TableBody>
             {action === ActionType.ADD && (
-              <TableRow key="form-row" className="relative">
-                <TableCell colSpan={columns.length}>
+              <TableRow key="form-row" className="flex relative">
+                <TableCell colSpan={columns.length} className="flex w-full p-0">
                   <AddSkillForm />
                 </TableCell>
               </TableRow>
@@ -118,9 +121,10 @@ export function DataTable<TData, TValue>({
                   <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
+                    className="flex"
                   >
                     {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
+                      <TableCell key={cell.id} className="flex-1">
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()

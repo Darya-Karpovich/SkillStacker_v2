@@ -13,6 +13,8 @@ import Link from "next/link";
 import { Rating } from "../rating/rating";
 import { HeartHalf } from "@/app/assets/icons/heart-half";
 import { Heart } from "@/app/assets/icons/heart";
+import resolveConfig from "tailwindcss/resolveConfig";
+import tailwindConfig from "@/tailwind.config";
 
 export type UserSkill = {
   id: number;
@@ -28,6 +30,8 @@ export type UserSkill = {
     description: string;
   };
 };
+
+const fullConfig = resolveConfig(tailwindConfig);
 
 const SortableColumnHeader = ({
   title,
@@ -56,6 +60,7 @@ const SortableColumnHeader = ({
     </Button>
   );
 };
+
 export const columns: ColumnDef<UserSkill>[] = [
   {
     id: "user",
@@ -96,6 +101,7 @@ export const columns: ColumnDef<UserSkill>[] = [
     cell: (experience) => (
       <Rating
         count={5}
+        color={fullConfig.theme.colors.yellow}
         value={experience.row.original.experienceValue}
         readOnly
       />
@@ -111,7 +117,7 @@ export const columns: ColumnDef<UserSkill>[] = [
         fullSymbol={<Heart />}
         halfSymbol={<HeartHalf />}
         count={5}
-        color="#9e2020"
+        color={fullConfig.theme.colors.red}
         value={like.row.original.likeValue}
         readOnly
       />

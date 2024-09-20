@@ -1,8 +1,9 @@
-"use client";
+'use client';
 
-import { Star, StarHalf } from "lucide-react";
-import { useState } from "react";
-import { RatingItem } from "./rating-item";
+import { Star, StarHalf } from 'lucide-react';
+import { useState } from 'react';
+import { RatingItem } from './rating-item';
+import { cn } from '@/lib/utils';
 
 type RatingProps = {
   count: number;
@@ -12,17 +13,18 @@ type RatingProps = {
   value: number;
   setValue?: (value: number) => void;
   readOnly?: boolean;
+  className?: string;
 };
 
 export const Rating = ({
   count,
   halfSymbol = <StarHalf />,
   fullSymbol = <Star />,
-  color = "yellow",
+  color = 'yellow',
   value,
   setValue,
   readOnly = false,
-  
+  className,
 }: RatingProps) => {
   const [hoverValue, setHoverValue] = useState<number | null>(null);
 
@@ -33,7 +35,7 @@ export const Rating = ({
   const handleMouseLeave = () => setHoverValue(null);
 
   return (
-    <div className="relative" onMouseLeave={handleMouseLeave}>
+    <div className={cn('relative', className)} onMouseLeave={handleMouseLeave}>
       <div className="flex gap-1">
         {Array.from({ length: count }, (_, i) => (
           <RatingItem
@@ -48,7 +50,7 @@ export const Rating = ({
         ))}
       </div>
 
-      <div className="flex absolute gap-1 top-0">
+      <div className="absolute top-0 flex gap-1">
         {Array.from({ length: fullStarsCount }, (_, i) => (
           <RatingItem
             key={i}

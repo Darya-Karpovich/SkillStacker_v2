@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { Button } from "../ui/button";
-import { cloneElement, MouseEvent, useState } from "react";
+import { Button } from '../ui/button';
+import { cloneElement, MouseEvent, useState } from 'react';
 
 type RatingItemProps = {
   icon: JSX.Element;
@@ -15,7 +15,7 @@ type RatingItemProps = {
 const detectMousePosition = (event: MouseEvent<HTMLButtonElement>) => {
   const { offsetX } = event.nativeEvent;
   const { offsetWidth } = event.currentTarget;
-  return offsetX < offsetWidth / 2 ? "left" : "right";
+  return offsetX < offsetWidth / 2 ? 'left' : 'right';
 };
 
 export const RatingItem = ({
@@ -26,20 +26,20 @@ export const RatingItem = ({
   setHoverValue,
   setCurrentRating,
 }: RatingItemProps) => {
-  const [mousePosition, setMousePosition] = useState<"left" | "right" | null>(
-    null
+  const [mousePosition, setMousePosition] = useState<'left' | 'right' | null>(
+    null,
   );
 
   const handleMouseEnter = (event: MouseEvent<HTMLButtonElement>) => {
     const position = detectMousePosition(event);
-    setHoverValue(idx + (position === "left" ? 0.5 : 1));
+    setHoverValue(idx + (position === 'left' ? 0.5 : 1));
   };
 
   const handleMouseMove = (event: MouseEvent<HTMLButtonElement>) => {
     const newPosition = detectMousePosition(event);
     if (mousePosition !== newPosition) {
       setMousePosition(newPosition);
-      setHoverValue(idx + (newPosition === "left" ? 0.5 : 1));
+      setHoverValue(idx + (newPosition === 'left' ? 0.5 : 1));
     }
   };
 
@@ -47,7 +47,7 @@ export const RatingItem = ({
     const position = detectMousePosition(event);
     setHoverValue(null);
     if (setCurrentRating) {
-      setCurrentRating(idx + (position === "left" ? 0.5 : 1));
+      setCurrentRating(idx + (position === 'left' ? 0.5 : 1));
     }
   };
 
@@ -57,6 +57,7 @@ export const RatingItem = ({
     cloneElement(icon, { fill: color, color, height: 20, width: 20 })
   ) : (
     <Button
+      type="button"
       className="hover:bg-transparent [&>svg]:size-5"
       size="icon-sm"
       variant="ghost"
