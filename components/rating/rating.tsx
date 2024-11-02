@@ -32,14 +32,16 @@ export const Rating = ({
   const hasHalfStar = displayValue % 1 !== 0;
   const fullStarsCount = Math.ceil(displayValue);
 
-  const handleMouseLeave = () => setHoverValue(null);
+  const handleMouseLeave = readOnly ? undefined : () => setHoverValue(null);
 
   return (
     <div
       data-testid="rating-component"
       className={cn('relative', className)}
       onMouseLeave={handleMouseLeave}
+      aria-label="rating component"
     >
+      {/* Render empty stars (gray) */}
       <div className="flex gap-1">
         {Array.from({ length: count }, (_, i) => (
           <RatingItem
@@ -49,11 +51,12 @@ export const Rating = ({
             idx={i}
             readOnly={readOnly}
             setHoverValue={setHoverValue}
-            setCurrentRating={setValue}
+            onRatingChange={setValue}
           />
         ))}
       </div>
 
+      {/* Render filled stars (color), with half star if applicable */}
       <div className="absolute top-0 flex gap-1">
         {Array.from({ length: fullStarsCount }, (_, i) => {
           const isHalfIcon = i === fullStarsCount - 1 && hasHalfStar;
@@ -66,7 +69,7 @@ export const Rating = ({
               idx={i}
               readOnly={readOnly}
               setHoverValue={setHoverValue}
-              setCurrentRating={setValue}
+              onRatingChange={readOnly ? undefined : setValue}
             />
           );
         })}

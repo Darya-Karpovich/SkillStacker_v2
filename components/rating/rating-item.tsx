@@ -10,7 +10,7 @@ type RatingItemProps = {
   readOnly: boolean;
   isHalfIcon?: boolean;
   setHoverValue: (value: number | null) => void;
-  setCurrentRating?: (value: number) => void;
+  onRatingChange?: (value: number) => void;
 };
 
 const detectMousePosition = (event: MouseEvent<HTMLButtonElement>) => {
@@ -26,32 +26,37 @@ export const RatingItem = ({
   readOnly,
   isHalfIcon,
   setHoverValue,
-  setCurrentRating,
+  onRatingChange,
 }: RatingItemProps) => {
   const [mousePosition, setMousePosition] = useState<'left' | 'right' | null>(
     null,
   );
   const dataTestId = `${isHalfIcon ? 'rating-item-half' : 'rating-item'}-${color}`;
 
+  const updateHoverValue = (position: 'left' | 'right', isClick = false) => {
+    const value = idx + (position === 'left' ? 0.5 : 1);
+    if (isClick) {
+      setHoverValue(null);
+      onRatingChange?.(value);
+    } else {
+      setHoverValue(value);
+    }
+  };
+
   const handleMouseEnter = (event: MouseEvent<HTMLButtonElement>) => {
-    const position = detectMousePosition(event);
-    setHoverValue(idx + (position === 'left' ? 0.5 : 1));
+    updateHoverValue(detectMousePosition(event));
   };
 
   const handleMouseMove = (event: MouseEvent<HTMLButtonElement>) => {
     const newPosition = detectMousePosition(event);
     if (mousePosition !== newPosition) {
       setMousePosition(newPosition);
-      setHoverValue(idx + (newPosition === 'left' ? 0.5 : 1));
+      updateHoverValue(newPosition);
     }
   };
 
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
-    const position = detectMousePosition(event);
-    setHoverValue(null);
-    if (setCurrentRating) {
-      setCurrentRating(idx + (position === 'left' ? 0.5 : 1));
-    }
+    updateHoverValue(detectMousePosition(event), true);
   };
 
   const resetMousePosition = () => setMousePosition(null);
@@ -69,6 +74,7 @@ export const RatingItem = ({
       type="button"
       className="hover:bg-transparent [&>svg]:size-5"
       size="icon-sm"
+      aria-label={`Rating item ${idx + 1}`}
       data-testid={dataTestId}
       variant="ghost"
       onMouseEnter={handleMouseEnter}
