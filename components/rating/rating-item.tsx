@@ -8,6 +8,7 @@ type RatingItemProps = {
   color: string;
   idx: number;
   readOnly: boolean;
+  isHalfIcon?: boolean;
   setHoverValue: (value: number | null) => void;
   setCurrentRating?: (value: number) => void;
 };
@@ -23,12 +24,14 @@ export const RatingItem = ({
   color,
   idx,
   readOnly,
+  isHalfIcon,
   setHoverValue,
   setCurrentRating,
 }: RatingItemProps) => {
   const [mousePosition, setMousePosition] = useState<'left' | 'right' | null>(
     null,
   );
+  const dataTestId = `${isHalfIcon ? 'rating-item-half' : 'rating-item'}-${color}`;
 
   const handleMouseEnter = (event: MouseEvent<HTMLButtonElement>) => {
     const position = detectMousePosition(event);
@@ -54,12 +57,19 @@ export const RatingItem = ({
   const resetMousePosition = () => setMousePosition(null);
 
   return readOnly ? (
-    cloneElement(icon, { fill: color, color, height: 20, width: 20 })
+    cloneElement(icon, {
+      fill: color,
+      color,
+      height: 20,
+      width: 20,
+      'data-testid': dataTestId,
+    })
   ) : (
     <Button
       type="button"
       className="hover:bg-transparent [&>svg]:size-5"
       size="icon-sm"
+      data-testid={dataTestId}
       variant="ghost"
       onMouseEnter={handleMouseEnter}
       onMouseMove={handleMouseMove}

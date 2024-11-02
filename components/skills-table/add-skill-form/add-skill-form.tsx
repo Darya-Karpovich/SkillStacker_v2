@@ -1,29 +1,29 @@
-"use client";
+'use client';
 
-import { Combobox } from "./combobox";
-import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Check, X } from "lucide-react";
-import { z } from "zod";
-import { Controller, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { addUserSkill, getSkills } from "@/app/actions";
-import { useTable } from "@/components/user-skills-table/contexts/table-context";
-import { useQuery } from "@tanstack/react-query";
-import { ErrorMessage } from "@hookform/error-message";
-import { ActionType } from "@/components/user-skills-table/action-type";
-import { Rating } from "@/components/rating/rating";
-import resolveConfig from "tailwindcss/resolveConfig";
-import tailwindConfig from "@/tailwind.config";
-import { Heart } from "@/app/assets/icons/heart";
-import { HeartHalf } from "@/app/assets/icons/heart-half";
+import { Combobox } from './combobox';
+import { useEffect, useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Check, X } from 'lucide-react';
+import { z } from 'zod';
+import { Controller, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { addUserSkill, getSkills } from '@/app/actions';
+import { useTable } from '@/components/user-skills-table/contexts/table-context';
+import { useQuery } from '@tanstack/react-query';
+import { ErrorMessage } from '@hookform/error-message';
+import { ActionType } from '@/components/user-skills-table/action-type';
+import { Rating } from '@/components/rating/rating';
+import resolveConfig from 'tailwindcss/resolveConfig';
+import tailwindConfig from '@/tailwind.config';
+import { Heart } from '@/app/assets/icons/heart';
+import { HeartHalf } from '@/app/assets/icons/heart-half';
 
 const fetchSkills = async () => {
   return await getSkills();
 };
 
 const formSchema = z.object({
-  skill: z.string().trim().min(1, { message: "This field is required" }),
+  skill: z.string().trim().min(1, { message: 'This field is required' }),
   like: z.number().min(0).max(5),
   experience: z.number().min(0).max(5),
 });
@@ -31,11 +31,11 @@ const formSchema = z.object({
 export type AddSkillFormValues = z.infer<typeof formSchema>;
 
 export const AddSkillForm = () => {
-  const [selectedSkill, setSelectedSkill] = useState("");
+  const [selectedSkill, setSelectedSkill] = useState('');
   const [skills, setSkills] = useState<{ label: string; value: string }[]>([]);
   const { setAction, userSkills } = useTable();
   const { data } = useQuery({
-    queryKey: ["skills"],
+    queryKey: ['skills'],
     queryFn: fetchSkills,
   });
 
@@ -46,8 +46,8 @@ export const AddSkillForm = () => {
       const filteredSkills = data.filter(
         (skill) =>
           !userSkills.find(
-            (userSkill) => String(userSkill.skillId) === skill.value
-          )
+            (userSkill) => String(userSkill.skillId) === skill.value,
+          ),
       );
       setSkills(filteredSkills);
     }
@@ -60,7 +60,7 @@ export const AddSkillForm = () => {
   } = useForm<AddSkillFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      skill: "",
+      skill: '',
       like: 0,
       experience: 0,
     },
@@ -75,7 +75,7 @@ export const AddSkillForm = () => {
     <form
       onSubmit={handleSubmit(onSubmit)}
       onError={(errors) => console.log(errors)}
-      className="relative flex w-full"
+      className="flex w-full"
     >
       <Controller
         control={control}
@@ -106,28 +106,30 @@ export const AddSkillForm = () => {
         control={control}
         name="experience"
         render={({ field }) => (
-          <Rating
-            count={5}
-            color={fullConfig.theme.colors.yellow}
-            value={field.value}
-            setValue={field.onChange}
-            className="flex flex-1 items-center p-4"
-          />
+          <div className="flex flex-1 items-center p-4">
+            <Rating
+              count={5}
+              color={fullConfig.theme.colors.yellow}
+              value={field.value}
+              setValue={field.onChange}
+            />
+          </div>
         )}
       />
       <Controller
         control={control}
         name="like"
         render={({ field }) => (
-          <Rating
-            fullSymbol={<Heart />}
-            halfSymbol={<HeartHalf />}
-            count={5}
-            color={fullConfig.theme.colors.red}
-            value={field.value}
-            setValue={field.onChange}
-            className="flex flex-1 items-center p-4"
-          />
+          <div className="flex flex-1 items-center p-4">
+            <Rating
+              fullSymbol={<Heart />}
+              halfSymbol={<HeartHalf />}
+              count={5}
+              color={fullConfig.theme.colors.red}
+              value={field.value}
+              setValue={field.onChange}
+            />
+          </div>
         )}
       />
       <div className="absolute -right-[120px] flex gap-2">

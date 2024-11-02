@@ -35,7 +35,11 @@ export const Rating = ({
   const handleMouseLeave = () => setHoverValue(null);
 
   return (
-    <div className={cn('relative', className)} onMouseLeave={handleMouseLeave}>
+    <div
+      data-testid="rating-component"
+      className={cn('relative', className)}
+      onMouseLeave={handleMouseLeave}
+    >
       <div className="flex gap-1">
         {Array.from({ length: count }, (_, i) => (
           <RatingItem
@@ -51,19 +55,21 @@ export const Rating = ({
       </div>
 
       <div className="absolute top-0 flex gap-1">
-        {Array.from({ length: fullStarsCount }, (_, i) => (
-          <RatingItem
-            key={i}
-            icon={
-              i === fullStarsCount - 1 && hasHalfStar ? halfSymbol : fullSymbol
-            }
-            color={color}
-            idx={i}
-            readOnly={readOnly}
-            setHoverValue={setHoverValue}
-            setCurrentRating={setValue}
-          />
-        ))}
+        {Array.from({ length: fullStarsCount }, (_, i) => {
+          const isHalfIcon = i === fullStarsCount - 1 && hasHalfStar;
+          return (
+            <RatingItem
+              key={i}
+              icon={isHalfIcon ? halfSymbol : fullSymbol}
+              isHalfIcon={isHalfIcon}
+              color={color}
+              idx={i}
+              readOnly={readOnly}
+              setHoverValue={setHoverValue}
+              setCurrentRating={setValue}
+            />
+          );
+        })}
       </div>
     </div>
   );
