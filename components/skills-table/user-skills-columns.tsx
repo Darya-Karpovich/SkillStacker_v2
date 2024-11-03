@@ -9,6 +9,11 @@ import {
 } from "@/components/ui/tooltip";
 import { ColumnDef, HeaderContext } from "@tanstack/react-table";
 import { ArrowUp } from "lucide-react";
+import resolveConfig from "tailwindcss/resolveConfig";
+import tailwindConfig from "@/tailwind.config";
+import { Rating } from "../rating/rating";
+import { Heart } from "@/app/assets/icons/heart";
+import { HeartHalf } from "@/app/assets/icons/heart-half";
 
 export type UserSkill = {
   id: number;
@@ -24,6 +29,8 @@ export type UserSkill = {
     description: string;
   };
 };
+
+const fullConfig = resolveConfig(tailwindConfig);
 
 const SortableColumnHeader = ({
   title,
@@ -77,11 +84,29 @@ export const userSkillsColumns: ColumnDef<UserSkill>[] = [
     header: ({ column }) => (
       <SortableColumnHeader title="Experience" column={column} />
     ),
+    cell: (experience) => (
+      <Rating
+        count={5}
+        color={fullConfig.theme.colors.yellow}
+        value={experience.row.original.experienceValue}
+        readOnly
+      />
+    ),
   },
   {
     accessorKey: "likeValue",
     header: ({ column }) => (
       <SortableColumnHeader title="Like" column={column} />
+    ),
+    cell: (like) => (
+      <Rating
+        fullSymbol={<Heart />}
+        halfSymbol={<HeartHalf />}
+        count={5}
+        color={fullConfig.theme.colors.red}
+        value={like.row.original.likeValue}
+        readOnly
+      />
     ),
   },
 ];
