@@ -1,8 +1,10 @@
-import { Header } from "@/components/header/header";
-import { ThemeProvider } from "@/components/theme.provider";
 import { Analytics } from "@vercel/analytics/react";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+
+import { ThemeProvider } from "@/components/theme.provider";
+import { Header } from "@/components/header/header";
+
 import "./globals.css";
 import NextAuthProvider from "./providers/session-provider";
 import { QueryClientProvider } from "./providers/query-client-provider";

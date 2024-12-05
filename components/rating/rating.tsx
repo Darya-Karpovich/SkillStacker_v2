@@ -2,8 +2,10 @@
 
 import { Star, StarHalf } from 'lucide-react';
 import { useState } from 'react';
-import { RatingItem } from './rating-item';
+
 import { cn } from '@/lib/utils';
+
+import { RatingItem } from './rating-item';
 
 type RatingProps = {
   count: number;

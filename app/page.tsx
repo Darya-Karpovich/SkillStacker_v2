@@ -1,6 +1,7 @@
+import prisma from "@/utils/prisma";
+
 import { DataTable } from "../components/skills-table/data-table";
 import { UserSkill, columns } from "../components/skills-table/columns";
-import prisma from "@/utils/prisma";
 
 export const dynamic = "force-dynamic";
 

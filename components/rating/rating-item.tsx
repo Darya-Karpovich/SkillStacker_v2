@@ -1,7 +1,8 @@
 'use client';
 
-import { Button } from '../ui/button';
 import { cloneElement, MouseEvent, useState } from 'react';
+
+import { Button } from '../ui/button';
 
 type RatingItemProps = {
   icon: JSX.Element;

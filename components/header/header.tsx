@@ -1,16 +1,19 @@
 "use client";
 
 import { signIn, signOut, useSession } from "next-auth/react";
-import { Button } from "../ui/button";
-import { ThemeToggle } from "./theme-toggle";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+
+import { Button } from "../ui/button";
+
+import { ThemeToggle } from "./theme-toggle";
 
 export const Header = () => {
   const { data: session } = useSession();

@@ -1,10 +1,11 @@
 "use server";
 
+import { getServerSession } from "next-auth";
+import { revalidatePath } from "next/cache";
+
 import type { AddSkillFormValues } from "@/components/skills-table/add-skill-form/add-skill-form";
 import { authOptions } from "@/lib/configs/auth/authOptions";
 import prisma from "@/utils/prisma";
-import { getServerSession } from "next-auth";
-import { revalidatePath } from "next/cache";
 
 export const getSkills = async () => {
   const skills = await prisma.skill.findMany();

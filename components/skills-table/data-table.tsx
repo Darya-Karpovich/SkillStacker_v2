@@ -11,6 +11,8 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
 } from "@tanstack/react-table";
+import { useEffect, useState } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import {
   Table,
@@ -20,13 +22,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
-import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { AddSkillForm } from "./add-skill-form/add-skill-form";
+
+
 import { ActionType } from "../user-skills-table/action-type";
+
+import { AddSkillForm } from "./add-skill-form/add-skill-form";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];

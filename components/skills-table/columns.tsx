@@ -1,20 +1,22 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { ColumnDef, HeaderContext } from "@tanstack/react-table";
+import { ArrowUp } from "lucide-react";
+import Link from "next/link";
+import resolveConfig from "tailwindcss/resolveConfig";
+
+import { HeartHalf } from "@/app/assets/icons/heart-half";
+import { Heart } from "@/app/assets/icons/heart";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { ColumnDef, HeaderContext } from "@tanstack/react-table";
-import { ArrowUp } from "lucide-react";
-import Link from "next/link";
-import { Rating } from "../rating/rating";
-import { HeartHalf } from "@/app/assets/icons/heart-half";
-import { Heart } from "@/app/assets/icons/heart";
-import resolveConfig from "tailwindcss/resolveConfig";
+import { Button } from "@/components/ui/button";
 import tailwindConfig from "@/tailwind.config";
+
+import { Rating } from "../rating/rating";
 
 export type UserSkill = {
   id: number;
@@ -42,9 +44,11 @@ const SortableColumnHeader = ({
 }) => {
   const onSortingChange = () => {
     const state = column.getIsSorted();
-    state === "desc"
-      ? column.clearSorting()
-      : column.toggleSorting(state === "asc");
+    if (state === "desc") {
+      column.clearSorting()
+    } else {
+      column.toggleSorting(state === "asc")
+    }
   };
 
   return (
@@ -101,7 +105,7 @@ export const columns: ColumnDef<UserSkill>[] = [
     cell: (experience) => (
       <Rating
         count={5}
-        color={fullConfig.theme.colors.yellow}
+        color={fullConfig.theme.extend.colors.yellow}
         value={experience.row.original.experienceValue}
         readOnly
       />
@@ -117,7 +121,7 @@ export const columns: ColumnDef<UserSkill>[] = [
         fullSymbol={<Heart />}
         halfSymbol={<HeartHalf />}
         count={5}
-        color={fullConfig.theme.colors.red}
+        color={fullConfig.theme.extend.colors.red}
         value={like.row.original.likeValue}
         readOnly
       />
