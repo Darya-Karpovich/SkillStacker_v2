@@ -1,19 +1,21 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
+import { ColumnDef, HeaderContext } from '@tanstack/react-table';
+import { ArrowUp } from 'lucide-react';
+import resolveConfig from 'tailwindcss/resolveConfig';
+
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { ColumnDef, HeaderContext } from "@tanstack/react-table";
-import { ArrowUp } from "lucide-react";
-import resolveConfig from "tailwindcss/resolveConfig";
-import tailwindConfig from "@/tailwind.config";
-import { Rating } from "../rating/rating";
-import { Heart } from "@/app/assets/icons/heart";
-import { HeartHalf } from "@/app/assets/icons/heart-half";
+} from '@/components/ui/tooltip';
+import { Button } from '@/components/ui/button';
+import tailwindConfig from '@/tailwind.config';
+import { Heart } from '@/app/assets/icons/heart';
+import { HeartHalf } from '@/app/assets/icons/heart-half';
+
+import { Rating } from '../rating/rating';
 
 export type UserSkill = {
   id: number;
@@ -37,22 +39,24 @@ const SortableColumnHeader = ({
   column,
 }: {
   title: string;
-  column: HeaderContext<UserSkill, unknown>["column"];
+  column: HeaderContext<UserSkill, unknown>['column'];
 }) => {
   const onSortingChange = () => {
     const state = column.getIsSorted();
-    state === "desc"
-      ? column.clearSorting()
-      : column.toggleSorting(state === "asc");
+    if (state === 'desc') {
+      column.clearSorting();
+    } else {
+      column.toggleSorting(state === 'asc');
+    }
   };
 
   return (
     <Button variant="ghost" onClick={onSortingChange} className="flex gap-1">
       {title}
-      {column.getIsSorted() === "asc" ? (
+      {column.getIsSorted() === 'asc' ? (
         <ArrowUp className="h-4 w-4" />
-      ) : column.getIsSorted() === "desc" ? (
-        <ArrowUp className="h-4 w-4 transform rotate-180" />
+      ) : column.getIsSorted() === 'desc' ? (
+        <ArrowUp className="h-4 w-4 rotate-180 transform" />
       ) : (
         <span className="h-4 w-4" />
       )}
@@ -61,7 +65,7 @@ const SortableColumnHeader = ({
 };
 export const userSkillsColumns: ColumnDef<UserSkill>[] = [
   {
-    id: "skill",
+    id: 'skill',
     accessorFn: (skill) => `${skill.skill.name}`,
     header: ({ column }) => (
       <SortableColumnHeader title="Skill" column={column} />
@@ -80,7 +84,7 @@ export const userSkillsColumns: ColumnDef<UserSkill>[] = [
     ),
   },
   {
-    accessorKey: "experienceValue",
+    accessorKey: 'experienceValue',
     header: ({ column }) => (
       <SortableColumnHeader title="Experience" column={column} />
     ),
@@ -94,7 +98,7 @@ export const userSkillsColumns: ColumnDef<UserSkill>[] = [
     ),
   },
   {
-    accessorKey: "likeValue",
+    accessorKey: 'likeValue',
     header: ({ column }) => (
       <SortableColumnHeader title="Like" column={column} />
     ),

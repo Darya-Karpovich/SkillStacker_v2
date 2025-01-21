@@ -1,9 +1,11 @@
 "use client";
 
-import { Button } from "../ui/button";
 import { Plus } from "lucide-react";
+
+import { Button } from "../ui/button";
 import { DataTable } from "../skills-table/data-table";
 import { userSkillsColumns } from "../skills-table/user-skills-columns";
+
 import { useTable } from "./contexts/table-context";
 import { ActionType } from "./action-type";
 

@@ -1,22 +1,24 @@
 'use client';
 
-import { Combobox } from './combobox';
 import { useEffect, useState } from 'react';
-import { Button } from '@/components/ui/button';
 import { Check, X } from 'lucide-react';
 import { z } from 'zod';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { addUserSkill, getSkills } from '@/app/actions';
-import { useTable } from '@/components/user-skills-table/contexts/table-context';
 import { useQuery } from '@tanstack/react-query';
 import { ErrorMessage } from '@hookform/error-message';
+import resolveConfig from 'tailwindcss/resolveConfig';
+
+import { addUserSkill, getSkills } from '@/app/actions';
+import { useTable } from '@/components/user-skills-table/contexts/table-context';
 import { ActionType } from '@/components/user-skills-table/action-type';
 import { Rating } from '@/components/rating/rating';
-import resolveConfig from 'tailwindcss/resolveConfig';
+import { Button } from '@/components/ui/button';
 import tailwindConfig from '@/tailwind.config';
 import { Heart } from '@/app/assets/icons/heart';
 import { HeartHalf } from '@/app/assets/icons/heart-half';
+
+import { Combobox } from './combobox';
 
 const fetchSkills = async () => {
   return await getSkills();
@@ -109,7 +111,7 @@ export const AddSkillForm = () => {
           <div className="flex flex-1 items-center p-4">
             <Rating
               count={5}
-              color={fullConfig.theme.colors.yellow}
+              color={fullConfig.theme.colors.red}
               value={field.value}
               setValue={field.onChange}
             />

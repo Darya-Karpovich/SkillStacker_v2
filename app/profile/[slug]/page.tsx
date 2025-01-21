@@ -1,13 +1,14 @@
-import prisma from '@/utils/prisma';
 import { getServerSession } from 'next-auth/next';
 import { UserSkill } from '@prisma/client';
-import { authOptions } from '@/lib/configs/auth/authOptions';
+
 import { UserSkillsTable } from '@/components/user-skills-table/user-skills-table';
 import { TableProvider } from '@/components/user-skills-table/contexts/table-context';
+import { authOptions } from '@/lib/configs/auth/authOptions';
+import prisma from '@/utils/prisma';
 
 const Profile = async ({ params }: { params: { slug: string } }) => {
   const session = await getServerSession(authOptions);
-  const isCurrentUser = session?.user?.id == Number(params.slug);
+  const isCurrentUser = session?.user.id == params.slug;
 
   const userSkills = (await prisma.userSkill.findMany({
     where: {
