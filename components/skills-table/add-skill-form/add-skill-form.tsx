@@ -111,7 +111,7 @@ export const AddSkillForm = () => {
           <div className="flex flex-1 items-center p-4">
             <Rating
               count={5}
-              color={fullConfig.theme.extend.colors.yellow}
+              color={fullConfig.theme.colors.red}
               value={field.value}
               setValue={field.onChange}
             />
@@ -127,7 +127,7 @@ export const AddSkillForm = () => {
               fullSymbol={<Heart />}
               halfSymbol={<HeartHalf />}
               count={5}
-              color={fullConfig.theme.extend.colors.red}
+              color={fullConfig.theme.colors.red}
               value={field.value}
               setValue={field.onChange}
             />

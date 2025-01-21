@@ -105,7 +105,7 @@ export const columns: ColumnDef<UserSkill>[] = [
     cell: (experience) => (
       <Rating
         count={5}
-        color={fullConfig.theme.extend.colors.yellow}
+        color={fullConfig.theme.colors.yellow}
         value={experience.row.original.experienceValue}
         readOnly
       />
@@ -121,7 +121,7 @@ export const columns: ColumnDef<UserSkill>[] = [
         fullSymbol={<Heart />}
         halfSymbol={<HeartHalf />}
         count={5}
-        color={fullConfig.theme.extend.colors.red}
+        color={fullConfig.theme.colors.red}
         value={like.row.original.likeValue}
         readOnly
       />
