@@ -7,22 +7,14 @@ import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQuery } from '@tanstack/react-query';
 import { ErrorMessage } from '@hookform/error-message';
-import resolveConfig from 'tailwindcss/resolveConfig';
-
 import { addUserSkill, getSkills } from '@/app/actions';
 import { useTable } from '@/components/user-skills-table/contexts/table-context';
 import { ActionType } from '@/components/user-skills-table/action-type';
 import { Rating } from '@/components/rating/rating';
 import { Button } from '@/components/ui/button';
-import tailwindConfig from '@/tailwind.config';
 import { Heart } from '@/app/assets/icons/heart';
 import { HeartHalf } from '@/app/assets/icons/heart-half';
-
 import { Combobox } from './combobox';
-
-const fetchSkills = async () => {
-  return await getSkills();
-};
 
 const formSchema = z.object({
   skill: z.string().trim().min(1, { message: 'This field is required' }),
@@ -38,10 +30,8 @@ export const AddSkillForm = () => {
   const { setAction, userSkills } = useTable();
   const { data } = useQuery({
     queryKey: ['skills'],
-    queryFn: fetchSkills,
+    queryFn: getSkills,
   });
-
-  const fullConfig = resolveConfig(tailwindConfig);
 
   useEffect(() => {
     if (data) {
@@ -111,7 +101,7 @@ export const AddSkillForm = () => {
           <div className="flex flex-1 items-center p-4">
             <Rating
               count={5}
-              color={fullConfig.theme.colors.red}
+              color="var(--color-yellow)"
               value={field.value}
               setValue={field.onChange}
             />
@@ -127,7 +117,7 @@ export const AddSkillForm = () => {
               fullSymbol={<Heart />}
               halfSymbol={<HeartHalf />}
               count={5}
-              color={fullConfig.theme.colors.red}
+              color="var(--color-red)"
               value={field.value}
               setValue={field.onChange}
             />

@@ -1,6 +1,6 @@
 "use client";
 
-import { UserSkill } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import {
   Dispatch,
   ReactNode,
@@ -11,9 +11,10 @@ import {
 } from "react";
 
 import { ActionType } from "../action-type";
+import { UserSkillIncludingSkill } from "@/app/actions";
 
-type TableCtx = {
-  userSkills: UserSkill[];
+export type TableCtx = {
+  userSkills: UserSkillIncludingSkill[]
   action: ActionType;
   setAction: Dispatch<SetStateAction<ActionType>>;
 };
@@ -37,7 +38,7 @@ export const TableProvider = ({
   userSkills,
 }: {
   children: ReactNode;
-  userSkills: UserSkill[];
+  userSkills: TableCtx["userSkills"];
 }) => {
   const [action, setAction] = useState<ActionType>(ActionType.NONE);
 

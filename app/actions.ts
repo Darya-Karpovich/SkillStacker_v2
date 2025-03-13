@@ -26,3 +26,37 @@ export const addUserSkill = async (formData: AddSkillFormValues) => {
   });
   revalidatePath(`/profile/${session?.user.id}`);
 };
+
+export const getUserWithSkills = async (slug: string) => {
+  const userSkills = await prisma.userSkill.findMany({
+    where: {
+      user: {
+        id: Number(slug),
+      },
+    },
+    include: {
+      skill: true,
+    },
+  })
+  return userSkills.map((userSkill) => ({
+    ...userSkill,
+    experienceValue: Number(userSkill.experienceValue),
+    likeValue: Number(userSkill.likeValue),
+  }));
+}
+
+export const getAllUserSkills = async () => {
+  return (await prisma.userSkill.findMany({
+    include: {
+      user: true,
+      skill: true,
+    },
+  })).map((userSkill) => ({
+    ...userSkill,
+    experienceValue: Number(userSkill.experienceValue),
+    likeValue: Number(userSkill.likeValue),
+  }));
+}
+
+export type UserSkillIncludingSkillAndUser = Awaited<ReturnType<typeof getAllUserSkills>>[number];
+export type UserSkillIncludingSkill = Awaited<ReturnType<typeof getUserWithSkills>>[number];

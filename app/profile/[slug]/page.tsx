@@ -1,26 +1,15 @@
 import { getServerSession } from 'next-auth/next';
-import { UserSkill } from '@prisma/client';
 
-import { UserSkillsTable } from '@/components/user-skills-table/user-skills-table';
+import { getUserWithSkills } from '@/app/actions';
 import { TableProvider } from '@/components/user-skills-table/contexts/table-context';
+import { UserSkillsTable } from '@/components/user-skills-table/user-skills-table';
 import { authOptions } from '@/lib/configs/auth/authOptions';
-import prisma from '@/utils/prisma';
 
-const Profile = async ({ params }: { params: { slug: string } }) => {
+const Profile = async (props: { params: Promise<{ slug: string }> }) => {
+  const { slug } = await props.params;
   const session = await getServerSession(authOptions);
-  const isCurrentUser = session?.user.id == params.slug;
-
-  const userSkills = (await prisma.userSkill.findMany({
-    where: {
-      user: {
-        id: Number(params.slug),
-      },
-    },
-    include: {
-      user: true,
-      skill: true,
-    },
-  })) as unknown as UserSkill[];
+  const isCurrentUser = session?.user?.id === slug;
+  const userSkills = await getUserWithSkills(slug);
 
   return (
     <TableProvider userSkills={userSkills}>

@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { Plus } from "lucide-react";
+import { Plus } from 'lucide-react';
 
-import { Button } from "../ui/button";
-import { DataTable } from "../skills-table/data-table";
-import { userSkillsColumns } from "../skills-table/user-skills-columns";
+import { Button } from '../ui/button';
+import { DataTable } from '../skills-table/data-table';
+import { userSkillsColumns } from '../skills-table/user-skills-columns';
 
-import { useTable } from "./contexts/table-context";
-import { ActionType } from "./action-type";
+import { useTable } from './contexts/table-context';
+import { ActionType } from './action-type';
 
 type UserSkillsTableProps = {
   isCurrentUser: boolean;
@@ -30,7 +30,7 @@ export const UserSkillsTable = ({ isCurrentUser }: UserSkillsTableProps) => {
       )}
       <DataTable
         columns={userSkillsColumns}
-        data={JSON.parse(JSON.stringify(userSkills))}
+        data={userSkills}
         withUsers={false}
         action={action}
       />
