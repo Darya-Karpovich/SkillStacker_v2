@@ -1,11 +1,11 @@
-"use server";
+'use server';
 
-import { getServerSession } from "next-auth";
-import { revalidatePath } from "next/cache";
+import { getServerSession } from 'next-auth';
+import { revalidatePath } from 'next/cache';
 
-import type { AddSkillFormValues } from "@/components/skills-table/add-skill-form/add-skill-form";
-import { authOptions } from "@/lib/configs/auth/authOptions";
-import prisma from "@/utils/prisma";
+import type { AddSkillFormValues } from '@/components/skills-table/add-skill-form/add-skill-form';
+import { authOptions } from '@/lib/configs/auth/authOptions';
+import prisma from '@/utils/prisma';
 
 export const getSkills = async () => {
   const skills = await prisma.skill.findMany();
@@ -37,26 +37,44 @@ export const getUserWithSkills = async (slug: string) => {
     include: {
       skill: true,
     },
-  })
+  });
   return userSkills.map((userSkill) => ({
     ...userSkill,
-    experienceValue: Number(userSkill.experienceValue),
-    likeValue: Number(userSkill.likeValue),
+    experienceValue: userSkill.experienceValue.toNumber(),
+    likeValue: userSkill.likeValue.toNumber(),
   }));
-}
+};
 
-export const getAllUserSkills = async () => {
-  return (await prisma.userSkill.findMany({
+export const getAllUserSkills = async (page = 1, pageSize = 10) => {
+  const skip = (page - 1) * pageSize;
+  const take = pageSize;
+  const userSkills = await prisma.userSkill.findMany({
+    skip,
+    take,
     include: {
-      user: true,
       skill: true,
+      user: true,
     },
-  })).map((userSkill) => ({
-    ...userSkill,
-    experienceValue: Number(userSkill.experienceValue),
-    likeValue: Number(userSkill.likeValue),
-  }));
-}
+  });
 
-export type UserSkillIncludingSkillAndUser = Awaited<ReturnType<typeof getAllUserSkills>>[number];
-export type UserSkillIncludingSkill = Awaited<ReturnType<typeof getUserWithSkills>>[number];
+  const totalUserSkills = await prisma.userSkill.count();
+  return {
+    data: userSkills.map((userSkill) => ({
+      ...userSkill,
+      experienceValue: userSkill.experienceValue.toNumber(),
+      likeValue: userSkill.likeValue.toNumber(),
+    })),
+    pagination: {
+      currentPage: page,
+      pageSize,
+      totalUserSkills,
+    },
+  };
+};
+
+export type UserSkillIncludingSkillAndUser = Awaited<
+  ReturnType<typeof getAllUserSkills>
+>['data'][number];
+export type UserSkillIncludingSkill = Awaited<
+  ReturnType<typeof getUserWithSkills>
+>[number];
