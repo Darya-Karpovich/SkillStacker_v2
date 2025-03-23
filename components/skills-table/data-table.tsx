@@ -2,20 +2,20 @@
 
 import {
   ColumnDef,
+  ColumnFiltersState,
   flexRender,
   getCoreRowModel,
-  useReactTable,
-  SortingState,
-  getSortedRowModel,
-  ColumnFiltersState,
   getFilteredRowModel,
-  getPaginationRowModel,
+  getSortedRowModel,
   PaginationState,
-  OnChangeFn,
+  SortingState,
+  useReactTable,
 } from '@tanstack/react-table';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import {
   Table,
   TableBody,
@@ -24,8 +24,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
 
 import { ActionType } from '../user-skills-table/action-type';
 

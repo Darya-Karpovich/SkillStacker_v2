@@ -15,7 +15,7 @@ import { Button } from '@/components/ui/button';
 import { Rating } from '../rating/rating';
 import { UserSkillIncludingSkillAndUser } from '@/app/actions';
 
-const SortableColumnHeader = <T extends unknown>({
+const SortableColumnHeader = <T = unknown,>({
   title,
   column,
 }: {

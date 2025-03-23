@@ -1,47 +1,22 @@
-'use client';
-import { useEffect, useState } from 'react';
-import { columns } from '../components/skills-table/columns';
-import { DataTable } from '../components/skills-table/data-table';
-import { getAllUserSkills, UserSkillIncludingSkillAndUser } from './actions';
-import { PaginationState } from '@tanstack/react-table';
+import { HomeList } from '@/components/home';
+import { getAllUserSkills } from './actions';
+import React from 'react';
+import { redirect } from 'next/navigation';
 
-export const dynamic = 'force-dynamic';
+export const PAGE_SIZE = 7;
 
-const Home = () => {
-  const [data, setData] = useState<UserSkillIncludingSkillAndUser[]>([]);
-  const [pagination, setPagination] = useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: 7,
-  });
-  const [totalUserSkills, setTotalUserSkills] = useState(0);
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+  const page =
+    'page' in (await searchParams) ? +((await searchParams).page || 1) : 1;
+  const data = await getAllUserSkills(page, PAGE_SIZE);
+  const totalPages = Math.ceil(data.pagination.totalUserSkills / PAGE_SIZE);
+  if (page > totalPages) {
+    redirect(`/?page=${totalPages}`);
+  }
 
-  useEffect(() => {
-    const fetchSkills = async () => {
-      const response = await getAllUserSkills(
-        pagination.pageIndex + 1,
-        pagination.pageSize,
-      );
-      setData(response.data);
-      setPagination({
-        pageIndex: response.pagination.currentPage - 1,
-        pageSize: response.pagination.pageSize,
-      });
-      setTotalUserSkills(response.pagination.totalUserSkills);
-    };
-    fetchSkills();
-  }, [pagination.pageIndex, pagination.pageSize]);
-
-  return (
-    <div>
-      <DataTable
-        columns={columns}
-        data={data}
-        totalRowCount={totalUserSkills}
-        pagination={pagination}
-        onPageChange={setPagination}
-      />
-    </div>
-  );
-};
-
-export default Home;
+  return <HomeList data={data} />;
+}

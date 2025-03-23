@@ -15,7 +15,6 @@ import { HeartHalf } from '@/app/assets/icons/heart-half';
 import { Rating } from '../rating/rating';
 import { UserSkillIncludingSkill } from '@/app/actions';
 
-
 const SortableColumnHeader = ({
   title,
   column,
