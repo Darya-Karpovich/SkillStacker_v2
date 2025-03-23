@@ -8,6 +8,8 @@ import { userSkillsColumns } from '../skills-table/user-skills-columns';
 
 import { useTable } from './contexts/table-context';
 import { ActionType } from './action-type';
+import { useState } from 'react';
+import { UserSkillIncludingSkill } from '@/app/actions';
 
 type UserSkillsTableProps = {
   isCurrentUser: boolean;
@@ -17,6 +19,19 @@ export const UserSkillsTable = ({ isCurrentUser }: UserSkillsTableProps) => {
   const { action, userSkills, setAction } = useTable();
   const handleAddButtonClick = () => {
     setAction(ActionType.ADD);
+  };
+  const [editedRow, setEditedRow] = useState<UserSkillIncludingSkill>();
+
+  const handleRowEdit = (
+    row: UserSkillIncludingSkill | undefined,
+    columnId?: string,
+    value?: number,
+  ) => {
+    if (row && (columnId === 'likeValue' || columnId === 'experienceValue')) {
+      setEditedRow({ ...row, [columnId]: value });
+    } else {
+      setEditedRow(row);
+    }
   };
 
   return (
@@ -31,8 +46,15 @@ export const UserSkillsTable = ({ isCurrentUser }: UserSkillsTableProps) => {
       <DataTable
         columns={userSkillsColumns}
         data={userSkills}
+        totalRowCount={userSkills.length}
+        // TODO: Implement pagination
+        pagination={{ pageIndex: 0, pageSize: 10 }}
+        onPageChange={() => {}}
         withUsers={false}
         action={action}
+        canModify={isCurrentUser}
+        currentEditedRow={editedRow}
+        onRowEditChange={handleRowEdit}
       />
     </>
   );

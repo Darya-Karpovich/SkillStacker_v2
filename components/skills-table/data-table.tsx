@@ -27,25 +27,44 @@ import {
 
 import { ActionType } from '../user-skills-table/action-type';
 
+import {
+  UserSkillIncludingSkill,
+  UserSkillIncludingSkillAndUser,
+} from '@/app/actions';
+import { Heart } from '@/app/assets/icons/heart';
+import { HeartHalf } from '@/app/assets/icons/heart-half';
+import { Rating } from '../rating/rating';
 import { AddSkillForm } from './add-skill-form/add-skill-form';
+import { RowActionButtons } from './row-action-buttons';
 
-interface DataTableProps<TData, TValue> {
+type TableTypes = UserSkillIncludingSkillAndUser | UserSkillIncludingSkill;
+interface DataTableProps<TData extends TableTypes, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   withUsers?: boolean;
   action?: ActionType;
   totalRowCount: number;
   pagination: PaginationState;
+  canModify?: boolean;
+  currentEditedRow?: TData;
+  onRowEditChange?: (
+    row: TData | undefined,
+    columnId?: string,
+    value?: number,
+  ) => void;
   onPageChange: Dispatch<SetStateAction<PaginationState>>;
 }
 
-export function DataTable<TData, TValue>({
+export function DataTable<TData extends TableTypes, TValue>({
   columns,
   data,
   withUsers = true,
   action = ActionType.NONE,
   pagination,
   totalRowCount,
+  currentEditedRow,
+  onRowEditChange,
+  canModify = false,
   onPageChange,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -56,6 +75,21 @@ export function DataTable<TData, TValue>({
       setColumnFilters([{ value: '', id: 'user' }]);
     }
   }, [columns]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (!(event.target as HTMLElement).closest('.relative')) {
+        if (onRowEditChange) {
+          onRowEditChange(undefined);
+        }
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const table = useReactTable({
     data,
@@ -74,6 +108,15 @@ export function DataTable<TData, TValue>({
       pagination,
     },
   });
+
+  const handleRowClick = (row: TData) => {
+    if (!canModify) {
+      return;
+    }
+    if (onRowEditChange) {
+      onRowEditChange(row);
+    }
+  };
 
   return (
     <div>
@@ -126,16 +169,85 @@ export function DataTable<TData, TValue>({
                   <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && 'selected'}
-                    className="flex"
+                    className="relative flex"
+                    onClick={() => handleRowClick(row.original)}
                   >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id} className="flex-1">
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext(),
+                        {canModify &&
+                        currentEditedRow?.id === +row.original.id &&
+                        (cell.column.id === 'experienceValue' ||
+                          cell.column.id === 'likeValue') ? (
+                          <>
+                            {cell.column.id === 'experienceValue' && (
+                              <div onClick={(event) => event.stopPropagation()}>
+                                <Rating
+                                  count={5}
+                                  color="var(--color-yellow)"
+                                  value={
+                                    currentEditedRow &&
+                                    typeof currentEditedRow === 'object' &&
+                                    'experienceValue' in currentEditedRow
+                                      ? (currentEditedRow[
+                                          'experienceValue'
+                                        ] as number)
+                                      : (cell.getValue() as number)
+                                  }
+                                  setValue={(value) =>
+                                    onRowEditChange &&
+                                    onRowEditChange(
+                                      currentEditedRow,
+                                      'experienceValue',
+                                      value,
+                                    )
+                                  }
+                                />
+                              </div>
+                            )}
+                            {cell.column.id === 'likeValue' && (
+                              <div onClick={(event) => event.stopPropagation()}>
+                                <Rating
+                                  count={5}
+                                  color="var(--color-red)"
+                                  fullSymbol={<Heart />}
+                                  halfSymbol={<HeartHalf />}
+                                  value={
+                                    currentEditedRow &&
+                                    typeof currentEditedRow === 'object' &&
+                                    'likeValue' in currentEditedRow
+                                      ? (currentEditedRow[
+                                          'likeValue'
+                                        ] as number)
+                                      : (cell.getValue() as number)
+                                  }
+                                  setValue={(value) =>
+                                    onRowEditChange &&
+                                    onRowEditChange(
+                                      currentEditedRow,
+                                      'likeValue',
+                                      value,
+                                    )
+                                  }
+                                />
+                              </div>
+                            )}
+                          </>
+                        ) : (
+                          flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext(),
+                          )
                         )}
                       </TableCell>
                     ))}
+                    {canModify && currentEditedRow?.id === +row.original.id && (
+                      <TableCell className="absolute -top-0.5 -right-[120px] flex h-full items-center gap-2">
+                        <RowActionButtons
+                          currentEditedRow={currentEditedRow}
+                          onRowEditChange={onRowEditChange}
+                        />
+                      </TableCell>
+                    )}
                   </TableRow>
                 ))}
               </>

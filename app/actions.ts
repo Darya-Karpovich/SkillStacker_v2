@@ -27,6 +27,38 @@ export const addUserSkill = async (formData: AddSkillFormValues) => {
   revalidatePath(`/profile/${session?.user.id}`);
 };
 
+export const updateUserSkill = async (
+  id: number,
+  data: {
+    experienceValue: number;
+    likeValue: number;
+  },
+) => {
+  const session = await getServerSession(authOptions);
+
+  await prisma.userSkill.update({
+    where: {
+      id,
+    },
+    data: {
+      experienceValue: data.experienceValue,
+      likeValue: data.likeValue,
+    },
+  });
+  revalidatePath(`/profile/${session?.user.id}`);
+};
+
+export const deleteUserSkill = async (id: number) => {
+  const session = await getServerSession(authOptions);
+
+  await prisma.userSkill.delete({
+    where: {
+      id,
+    },
+  });
+  revalidatePath(`/profile/${session?.user.id}`);
+};
+
 export const getUserWithSkills = async (slug: string) => {
   const userSkills = await prisma.userSkill.findMany({
     where: {

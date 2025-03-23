@@ -19,7 +19,7 @@ type RatingProps = {
 };
 
 export const Rating = ({
-  count,
+  count = 5,
   halfSymbol = <StarHalf />,
   fullSymbol = <Star />,
   color = 'yellow',

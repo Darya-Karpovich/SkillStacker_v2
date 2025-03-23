@@ -1,6 +1,6 @@
 'use client';
 
-import { cloneElement, MouseEvent, useState } from 'react';
+import { cloneElement, JSX, MouseEvent, useState } from 'react';
 
 import { Button } from '../ui/button';
 
