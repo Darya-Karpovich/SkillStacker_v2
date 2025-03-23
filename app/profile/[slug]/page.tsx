@@ -5,8 +5,8 @@ import { TableProvider } from '@/components/user-skills-table/contexts/table-con
 import { UserSkillsTable } from '@/components/user-skills-table/user-skills-table';
 import { authOptions } from '@/lib/configs/auth/authOptions';
 
-const Profile = async (props: { params: Promise<{ slug: string }> }) => {
-  const { slug } = await props.params;
+const Profile = async ({ params }: { params: Promise<{ slug: string }> }) => {
+  const { slug } = await params;
   const session = await getServerSession(authOptions);
   const isCurrentUser = session?.user?.id === slug;
   const userSkills = await getUserWithSkills(slug);

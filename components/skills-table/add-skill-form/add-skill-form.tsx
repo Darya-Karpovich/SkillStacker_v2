@@ -64,11 +64,7 @@ export const AddSkillForm = () => {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      onError={(errors) => console.log(errors)}
-      className="flex w-full"
-    >
+    <form onSubmit={handleSubmit(onSubmit)} className="flex w-full">
       <Controller
         control={control}
         name="skill"

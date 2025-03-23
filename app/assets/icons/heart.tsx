@@ -1,4 +1,4 @@
-import { IconProps } from "./types";
+import { IconProps } from './types';
 
 export const Heart = (props: IconProps) => (
   <svg

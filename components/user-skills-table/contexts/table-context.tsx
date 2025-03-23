@@ -1,6 +1,5 @@
-"use client";
+'use client';
 
-import { Prisma } from "@prisma/client";
 import {
   Dispatch,
   ReactNode,
@@ -8,13 +7,13 @@ import {
   createContext,
   useContext,
   useState,
-} from "react";
+} from 'react';
 
-import { ActionType } from "../action-type";
-import { UserSkillIncludingSkill } from "@/app/actions";
+import { ActionType } from '../action-type';
+import { UserSkillIncludingSkill } from '@/app/actions';
 
 export type TableCtx = {
-  userSkills: UserSkillIncludingSkill[]
+  userSkills: UserSkillIncludingSkill[];
   action: ActionType;
   setAction: Dispatch<SetStateAction<ActionType>>;
 };
@@ -28,7 +27,7 @@ const tableContext = createContext<TableCtx>({
 export const useTable = () => {
   const context = useContext(tableContext);
   if (!context) {
-    throw new Error("useTable must be used within a TableProvider");
+    throw new Error('useTable must be used within a TableProvider');
   }
   return context;
 };
@@ -38,7 +37,7 @@ export const TableProvider = ({
   userSkills,
 }: {
   children: ReactNode;
-  userSkills: TableCtx["userSkills"];
+  userSkills: TableCtx['userSkills'];
 }) => {
   const [action, setAction] = useState<ActionType>(ActionType.NONE);
 

@@ -4,7 +4,7 @@ import { getAllUserSkills } from '@/app/actions';
 import { PAGE_SIZE } from '@/app/page';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { columns } from '../components/skills-table/columns';
+import { allUserSkillsColumns } from '../components/skills-table/columns';
 import { DataTable } from '../components/skills-table/data-table';
 
 export const HomeList = ({
@@ -25,7 +25,7 @@ export const HomeList = ({
 
   return (
     <DataTable
-      columns={columns}
+      columns={allUserSkillsColumns}
       data={data.data}
       totalRowCount={data.pagination.totalUserSkills}
       pagination={{
