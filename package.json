@@ -9,7 +9,7 @@
     "test": "jest",
     "lint": "next lint",
     "sync": "prisma generate && npx @snaplet/seed sync",
-    "vercel-build": "prisma generate && prisma migrate deploy && next build"
+    "vercel-build": "npx prisma generate && prisma migrate deploy && next build"
   },
   "prisma": {
     "seed": "npx tsx prisma/seed/seed.ts"
