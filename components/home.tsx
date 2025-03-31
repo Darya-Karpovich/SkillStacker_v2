@@ -1,11 +1,12 @@
 'use client';
 
 import { getAllUserSkills } from '@/app/actions';
-import { PAGE_SIZE } from '@/app/page';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { allUserSkillsColumns } from '../components/skills-table/columns';
 import { DataTable } from '../components/skills-table/data-table';
+
+export const PAGE_SIZE = 7;
 
 export const HomeList = ({
   data,

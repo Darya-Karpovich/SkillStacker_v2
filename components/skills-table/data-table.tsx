@@ -89,7 +89,7 @@ export function DataTable<TData extends TableTypes, TValue>({
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, []);
+  }, [onRowEditChange]);
 
   const table = useReactTable({
     data,
