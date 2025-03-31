@@ -27,7 +27,8 @@ export const addUserSkill = async (formData: AddSkillFormValues) => {
     });
     revalidatePath(`/profile/${session?.user.id}`);
     return { success: true, message: 'Skill added successfully!' };
-  } catch {
+  } catch (error) {
+    console.error('Error adding user skill:', error);
     return { success: false, message: 'Failed to add skill!' };
   }
 };
