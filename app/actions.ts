@@ -53,7 +53,8 @@ export const updateUserSkill = async (
     });
     revalidatePath(`/profile/${session?.user.id}`);
     return { success: true, message: 'Skill updated successfully!' };
-  } catch {
+  } catch (error) {
+    console.error('Error updating user skill:', error);
     return { success: false, message: 'Failed to update skill!' };
   }
 };
@@ -68,7 +69,8 @@ export const deleteUserSkill = async (id: number) => {
     });
     revalidatePath(`/profile/${session?.user.id}`);
     return { success: true, message: 'Skill deleted successfully!' };
-  } catch {
+  } catch (error) {
+    console.error('Error deleting user skill:', error);
     return { success: false, message: 'Failed to delete skill!' };
   }
 };
