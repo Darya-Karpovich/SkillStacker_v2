@@ -22,7 +22,7 @@ export const Rating = ({
   count = 5,
   halfSymbol = <StarHalf />,
   fullSymbol = <Star />,
-  color = 'yellow',
+  color = 'var(--color-yellow)',
   value,
   setValue,
   readOnly = false,

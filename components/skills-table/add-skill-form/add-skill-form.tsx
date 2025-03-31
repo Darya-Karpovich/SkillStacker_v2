@@ -99,7 +99,7 @@ export const AddSkillForm = () => {
           <div className="flex flex-1 items-center p-2">
             <Rating
               count={5}
-              color="var(--yellow-color)"
+              color="var(--color-yellow)"
               value={field.value}
               setValue={field.onChange}
             />

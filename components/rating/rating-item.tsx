@@ -32,7 +32,8 @@ export const RatingItem = ({
   const [mousePosition, setMousePosition] = useState<'left' | 'right' | null>(
     null,
   );
-  const dataTestId = `${isHalfIcon ? 'rating-item-half' : 'rating-item'}-${color}`;
+  const colorName = color.match(/--color-(.+?)\)/)?.[1] ?? color;
+  const dataTestId = `${isHalfIcon ? 'rating-item-half' : 'rating-item'}-${colorName}`;
 
   const updateHoverValue = (position: 'left' | 'right', isClick = false) => {
     const value = idx + (position === 'left' ? 0.5 : 1);

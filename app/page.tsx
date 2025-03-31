@@ -1,7 +1,9 @@
-import { HomeList, PAGE_SIZE } from '@/components/home';
+import { HomeList } from '@/components/home';
 import { getAllUserSkills } from './actions';
 import React from 'react';
 import { redirect } from 'next/navigation';
+
+const PAGE_SIZE = 7;
 
 export default async function Home({
   searchParams,
@@ -16,5 +18,5 @@ export default async function Home({
     redirect(`/?page=${totalPages}`);
   }
 
-  return <HomeList data={data} />;
+  return <HomeList data={data} pageSize={PAGE_SIZE} />;
 }
