@@ -9,6 +9,7 @@ import React from 'react';
 import './globals.css';
 import { QueryClientProvider } from './providers/query-client-provider';
 import NextAuthProvider from './providers/session-provider';
+import { Toaster } from '@/components/ui/sonner';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -41,6 +42,7 @@ export default async function RootLayout({
                 </React.Suspense>
                 <Analytics />
               </div>
+              <Toaster richColors toastOptions={{}} />
             </ThemeProvider>
           </NextAuthProvider>
         </QueryClientProvider>

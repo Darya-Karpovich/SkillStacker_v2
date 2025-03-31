@@ -49,7 +49,7 @@ export const Rating = ({
           <RatingItem
             key={i}
             icon={fullSymbol}
-            color="gray"
+            color="var(--color-gray)"
             idx={i}
             readOnly={readOnly}
             setHoverValue={setHoverValue}

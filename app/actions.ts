@@ -16,15 +16,20 @@ export const getSkills = async () => {
 
 export const addUserSkill = async (formData: AddSkillFormValues) => {
   const session = await getServerSession(authOptions);
-  await prisma.userSkill.create({
-    data: {
-      userId: Number(session?.user.id),
-      skillId: Number(formData.skill),
-      experienceValue: formData.experience,
-      likeValue: formData.like,
-    },
-  });
-  revalidatePath(`/profile/${session?.user.id}`);
+  try {
+    await prisma.userSkill.create({
+      data: {
+        userId: Number(session?.user.id),
+        skillId: Number(formData.skill),
+        experienceValue: formData.experience,
+        likeValue: formData.like,
+      },
+    });
+    revalidatePath(`/profile/${session?.user.id}`);
+    return { success: true, message: 'Skill added successfully!' };
+  } catch {
+    return { success: false, message: 'Failed to add skill!' };
+  }
 };
 
 export const updateUserSkill = async (
@@ -35,28 +40,36 @@ export const updateUserSkill = async (
   },
 ) => {
   const session = await getServerSession(authOptions);
-
-  await prisma.userSkill.update({
-    where: {
-      id,
-    },
-    data: {
-      experienceValue: data.experienceValue,
-      likeValue: data.likeValue,
-    },
-  });
-  revalidatePath(`/profile/${session?.user.id}`);
+  try {
+    await prisma.userSkill.update({
+      where: {
+        id,
+      },
+      data: {
+        experienceValue: data.experienceValue,
+        likeValue: data.likeValue,
+      },
+    });
+    revalidatePath(`/profile/${session?.user.id}`);
+    return { success: true, message: 'Skill updated successfully!' };
+  } catch {
+    return { success: false, message: 'Failed to update skill!' };
+  }
 };
 
 export const deleteUserSkill = async (id: number) => {
   const session = await getServerSession(authOptions);
-
-  await prisma.userSkill.delete({
-    where: {
-      id,
-    },
-  });
-  revalidatePath(`/profile/${session?.user.id}`);
+  try {
+    await prisma.userSkill.delete({
+      where: {
+        id,
+      },
+    });
+    revalidatePath(`/profile/${session?.user.id}`);
+    return { success: true, message: 'Skill deleted successfully!' };
+  } catch {
+    return { success: false, message: 'Failed to delete skill!' };
+  }
 };
 
 export const getUserWithSkills = async (slug: string) => {

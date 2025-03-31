@@ -5,6 +5,7 @@ import {
   updateUserSkill,
   UserSkillIncludingSkill,
 } from '@/app/actions';
+import { toast } from 'sonner';
 
 type RowActionButtonsProps<T> = {
   currentEditedRow: T;
@@ -15,22 +16,37 @@ export const RowActionButtons = <TData extends UserSkillIncludingSkill>({
   currentEditedRow,
   onRowEditChange,
 }: RowActionButtonsProps<TData>) => {
+  const handleUpdateUserSkill = async (
+    event: React.MouseEvent<HTMLButtonElement>,
+  ) => {
+    event.stopPropagation();
+    if (onRowEditChange) {
+      onRowEditChange(undefined);
+    }
+    const result = await updateUserSkill(currentEditedRow.id, {
+      experienceValue: currentEditedRow.experienceValue,
+      likeValue: currentEditedRow.likeValue,
+    });
+    toast[result.success ? 'success' : 'error'](result.message);
+  };
+
+  const handleDeleteUserSkill = async (
+    event: React.MouseEvent<HTMLButtonElement>,
+  ) => {
+    event.stopPropagation();
+    if (onRowEditChange) {
+      onRowEditChange(undefined);
+    }
+    const result = await deleteUserSkill(currentEditedRow.id);
+    toast[result.success ? 'success' : 'error'](result.message);
+  };
   return (
     <>
       <Button
         type="submit"
         size="icon"
         variant="secondary"
-        onClick={(event) => {
-          event.stopPropagation();
-          if (onRowEditChange) {
-            onRowEditChange(undefined);
-          }
-          updateUserSkill(currentEditedRow.id, {
-            experienceValue: currentEditedRow.experienceValue,
-            likeValue: currentEditedRow.likeValue,
-          });
-        }}
+        onClick={handleUpdateUserSkill}
       >
         <Check />
       </Button>
@@ -51,14 +67,7 @@ export const RowActionButtons = <TData extends UserSkillIncludingSkill>({
         type="button"
         size="icon"
         variant="secondary"
-        onClick={(event) => {
-          event.stopPropagation();
-          if (onRowEditChange) {
-            onRowEditChange(undefined);
-          }
-
-          deleteUserSkill(currentEditedRow.id);
-        }}
+        onClick={handleDeleteUserSkill}
       >
         <Trash2 />
       </Button>

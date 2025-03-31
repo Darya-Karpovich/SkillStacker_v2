@@ -15,6 +15,7 @@ import { z } from 'zod';
 import { Combobox } from './combobox';
 import { Check, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
 
 const formSchema = z.object({
   skill: z.string().trim().min(1, { message: 'This field is required' }),
@@ -58,8 +59,9 @@ export const AddSkillForm = () => {
     },
   });
 
-  const onSubmit = (values: AddSkillFormValues) => {
-    addUserSkill(values);
+  const onSubmit = async (values: AddSkillFormValues) => {
+    const result = await addUserSkill(values);
+    toast[result.success ? 'success' : 'error'](result.message);
     setAction(ActionType.NONE);
   };
 
@@ -97,7 +99,7 @@ export const AddSkillForm = () => {
           <div className="flex flex-1 items-center p-2">
             <Rating
               count={5}
-              color="var(--color-yellow)"
+              color="var(--yellow-color)"
               value={field.value}
               setValue={field.onChange}
             />

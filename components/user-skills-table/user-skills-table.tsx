@@ -2,14 +2,14 @@
 
 import { Plus } from 'lucide-react';
 
-import { Button } from '../ui/button';
 import { DataTable } from '../skills-table/data-table';
 import { userSkillsColumns } from '../skills-table/user-skills-columns';
+import { Button } from '../ui/button';
 
-import { useTable } from './contexts/table-context';
-import { ActionType } from './action-type';
-import { useState } from 'react';
 import { UserSkillIncludingSkill } from '@/app/actions';
+import { useState } from 'react';
+import { ActionType } from './action-type';
+import { useTable } from './contexts/table-context';
 
 type UserSkillsTableProps = {
   isCurrentUser: boolean;
