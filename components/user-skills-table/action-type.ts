@@ -1,6 +1,6 @@
 export enum ActionType {
-  ADD = "add",
-  EDIT = "edit",
-  DELETE = "delete",
-  NONE = "none",
+  ADD = 'add',
+  EDIT = 'edit',
+  DELETE = 'delete',
+  NONE = 'none',
 }

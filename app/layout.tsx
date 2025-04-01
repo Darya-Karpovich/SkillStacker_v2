@@ -1,27 +1,27 @@
-import { Analytics } from "@vercel/analytics/react";
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Analytics } from '@vercel/analytics/react';
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import { Header } from '@/components/header/header';
+import { ThemeProvider } from '@/components/theme.provider';
+import React from 'react';
+import './globals.css';
+import { QueryClientProvider } from './providers/query-client-provider';
+import NextAuthProvider from './providers/session-provider';
+import { Toaster } from '@/components/ui/sonner';
 
-import { ThemeProvider } from "@/components/theme.provider";
-import { Header } from "@/components/header/header";
-
-import "./globals.css";
-import NextAuthProvider from "./providers/session-provider";
-import { QueryClientProvider } from "./providers/query-client-provider";
-
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: "SlillStacker",
+  title: 'SkillStacker',
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
         <QueryClientProvider>
           <NextAuthProvider>
@@ -31,11 +31,16 @@ export default function RootLayout({
               enableSystem
               disableTransitionOnChange
             >
-              <div className="flex mx-40 flex-col">
+              <div className="mx-40 flex flex-col">
                 <Header />
-                {children}
+                <React.Suspense
+                  fallback={<div className="text-white">Loading...</div>}
+                >
+                  {children}
+                </React.Suspense>
                 <Analytics />
               </div>
+              <Toaster richColors toastOptions={{}} />
             </ThemeProvider>
           </NextAuthProvider>
         </QueryClientProvider>

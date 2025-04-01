@@ -19,14 +19,16 @@
     ],
     "paths": {
       "@/*": ["./*"]
-    }
+    },
+    "target": "ES2017"
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "*/*.mjs"
+    "*/*.mjs",
+    "tailwind.config.ts"
   ],
   "exclude": ["node_modules", "prisma/seed/**/*"]
 }

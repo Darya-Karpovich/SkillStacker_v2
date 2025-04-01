@@ -1,7 +1,7 @@
 'use client';
 
 import { Star, StarHalf } from 'lucide-react';
-import { useState } from 'react';
+import { type JSX, useState } from 'react';
 
 import { cn } from '@/lib/utils';
 
@@ -19,10 +19,10 @@ type RatingProps = {
 };
 
 export const Rating = ({
-  count,
+  count = 5,
   halfSymbol = <StarHalf />,
   fullSymbol = <Star />,
-  color = 'yellow',
+  color = 'var(--color-yellow)',
   value,
   setValue,
   readOnly = false,
@@ -49,7 +49,7 @@ export const Rating = ({
           <RatingItem
             key={i}
             icon={fullSymbol}
-            color="gray"
+            color="var(--color-gray)"
             idx={i}
             readOnly={readOnly}
             setHoverValue={setHoverValue}

@@ -1,23 +1,22 @@
-import prisma from "@/utils/prisma";
+import { HomeList } from '@/components/home';
+import { getAllUserSkills } from './actions';
+import React from 'react';
+import { redirect } from 'next/navigation';
 
-import { DataTable } from "../components/skills-table/data-table";
-import { UserSkill, columns } from "../components/skills-table/columns";
+const PAGE_SIZE = 7;
 
-export const dynamic = "force-dynamic";
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+  const page =
+    'page' in (await searchParams) ? +((await searchParams).page || 1) : 1;
+  const data = await getAllUserSkills(page, PAGE_SIZE);
+  const totalPages = Math.ceil(data.pagination.totalUserSkills / PAGE_SIZE);
+  if (page > totalPages) {
+    redirect(`/?page=${totalPages}`);
+  }
 
-const Home = async () => {
-  const userSkills = (await prisma.userSkill.findMany({
-    include: {
-      user: true,
-      skill: true,
-    },
-  })) as unknown as UserSkill[];
-
-  return (
-    <div>
-      <DataTable columns={columns} data={userSkills} />
-    </div>
-  );
-};
-
-export default Home;
+  return <HomeList data={data} pageSize={PAGE_SIZE} />;
+}

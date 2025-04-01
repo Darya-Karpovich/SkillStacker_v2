@@ -2,8 +2,6 @@
 
 import { ColumnDef, HeaderContext } from '@tanstack/react-table';
 import { ArrowUp } from 'lucide-react';
-import resolveConfig from 'tailwindcss/resolveConfig';
-
 import {
   Tooltip,
   TooltipContent,
@@ -11,35 +9,18 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { Button } from '@/components/ui/button';
-import tailwindConfig from '@/tailwind.config';
 import { Heart } from '@/app/assets/icons/heart';
 import { HeartHalf } from '@/app/assets/icons/heart-half';
 
 import { Rating } from '../rating/rating';
-
-export type UserSkill = {
-  id: number;
-  likeValue: number;
-  experienceValue: number;
-  user: {
-    id: number;
-    name: string;
-  };
-  skill: {
-    id: number;
-    name: string;
-    description: string;
-  };
-};
-
-const fullConfig = resolveConfig(tailwindConfig);
+import { UserSkillIncludingSkill } from '@/app/actions';
 
 const SortableColumnHeader = ({
   title,
   column,
 }: {
   title: string;
-  column: HeaderContext<UserSkill, unknown>['column'];
+  column: HeaderContext<UserSkillIncludingSkill, unknown>['column'];
 }) => {
   const onSortingChange = () => {
     const state = column.getIsSorted();
@@ -63,7 +44,7 @@ const SortableColumnHeader = ({
     </Button>
   );
 };
-export const userSkillsColumns: ColumnDef<UserSkill>[] = [
+export const userSkillsColumns: ColumnDef<UserSkillIncludingSkill>[] = [
   {
     id: 'skill',
     accessorFn: (skill) => `${skill.skill.name}`,
@@ -91,7 +72,7 @@ export const userSkillsColumns: ColumnDef<UserSkill>[] = [
     cell: (experience) => (
       <Rating
         count={5}
-        color={fullConfig.theme.colors.yellow}
+        color="var(--color-yellow)"
         value={experience.row.original.experienceValue}
         readOnly
       />
@@ -107,7 +88,7 @@ export const userSkillsColumns: ColumnDef<UserSkill>[] = [
         fullSymbol={<Heart />}
         halfSymbol={<HeartHalf />}
         count={5}
-        color={fullConfig.theme.colors.red}
+        color="var(--color-red)"
         value={like.row.original.likeValue}
         readOnly
       />

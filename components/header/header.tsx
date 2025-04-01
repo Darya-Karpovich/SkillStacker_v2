@@ -1,25 +1,25 @@
-"use client";
+'use client';
 
-import { signIn, signOut, useSession } from "next-auth/react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { signIn, signOut, useSession } from 'next-auth/react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from '@/components/ui/dropdown-menu';
 
-import { Button } from "../ui/button";
+import { Button } from '../ui/button';
 
-import { ThemeToggle } from "./theme-toggle";
+import { ThemeToggle } from './theme-toggle';
 
 export const Header = () => {
   const { data: session } = useSession();
   const router = useRouter();
   return (
-    <div className="py-4 flex items-center justify-between">
+    <div className="flex items-center justify-between py-4">
       <Link href="/">Skill-Stacker</Link>
       <div className="flex items-center gap-2">
         {session ? (
@@ -29,7 +29,7 @@ export const Header = () => {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start">
               <DropdownMenuItem
-                onClick={() => router.push(`/profile/${session.user.id}`)}
+                onClick={() => router.push(`/profile/${session.user?.id}`)}
               >
                 Profile
               </DropdownMenuItem>
